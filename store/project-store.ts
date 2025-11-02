@@ -18,7 +18,13 @@ export const useProjectStore = create<ProjectState>()(
       projects: [],
       currentProjectId: null,
       addProject: (project) =>
-        set((state) => ({ projects: [...state.projects, project] })),
+        set((state) => {
+          // Prevent adding duplicate projects
+          if (state.projects.some((p) => p.id === project.id)) {
+            return state;
+          }
+          return { projects: [...state.projects, project] };
+        }),
       updateProject: (id, updates) =>
         set((state) => ({
           projects: state.projects.map((p) =>
@@ -40,7 +46,7 @@ export const useProjectStore = create<ProjectState>()(
       },
     }),
     {
-      name: 'project-storage',
+      name: 'project-storage-v2',
     }
   )
 );

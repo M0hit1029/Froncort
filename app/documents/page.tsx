@@ -59,7 +59,7 @@ export default function DocumentsPage() {
       saveTimerRef.current = setTimeout(() => {
         if (content !== lastContentRef.current) {
           addVersion(selectedPageId, {
-            id: `version-${Date.now()}`,
+            id: `version-${crypto.randomUUID()}`,
             content,
             createdAt: new Date(),
             createdBy: user.id,
@@ -72,7 +72,7 @@ export default function DocumentsPage() {
       // Add activity
       if (currentProjectId) {
         addActivity({
-          id: `activity-${Date.now()}`,
+          id: `activity-${crypto.randomUUID()}`,
           type: 'page_edited',
           userId: user.id,
           projectId: currentProjectId,
@@ -89,7 +89,7 @@ export default function DocumentsPage() {
     if (!currentProjectId || !user) return;
 
     const newPage: DocumentPage = {
-      id: `page-${Date.now()}`,
+      id: `page-${crypto.randomUUID()}`,
       projectId: currentProjectId,
       title: 'Untitled Page',
       content: JSON.stringify({
@@ -114,7 +114,7 @@ export default function DocumentsPage() {
 
     // Add activity
     addActivity({
-      id: `activity-${Date.now()}`,
+      id: `activity-${crypto.randomUUID()}`,
       type: 'page_created',
       userId: user.id,
       projectId: currentProjectId,

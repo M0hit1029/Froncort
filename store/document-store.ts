@@ -76,7 +76,7 @@ export const useDocumentStore = create<DocumentState>()(
         })),
     }),
     {
-      name: 'document-storage',
+      name: 'document-storage-v2',
     }
   )
 );

@@ -139,7 +139,7 @@ export const useKanbanStore = create<KanbanState>()(
         })),
     }),
     {
-      name: 'kanban-storage',
+      name: 'kanban-storage-v2',
     }
   )
 );
