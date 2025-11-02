@@ -29,13 +29,32 @@ cd Froncort
 # Install dependencies
 npm install
 
-# Run development server
+# Run development server with WebSocket server
+npm run dev:all
+
+# Or run servers separately:
+# Terminal 1: Next.js
 npm run dev
+
+# Terminal 2: WebSocket server
+npm run ws:dev
 
 # Open http://localhost:3000
 ```
 
 The app will automatically create a demo project and user on first load.
+
+### For Full Collaboration Features
+
+1. Set up Supabase (see [SUPABASE_SETUP.md](./docs/SUPABASE_SETUP.md))
+2. Add credentials to `.env.local`:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   NEXT_PUBLIC_WS_URL=ws://localhost:3001
+   ```
+3. Start both servers: `npm run dev:all`
+4. Open in multiple browsers to test collaboration
 
 ## 📚 Documentation
 
@@ -48,22 +67,29 @@ Comprehensive documentation is available in the `/docs` folder:
 
 ## 🛠️ Technology Stack
 
-- **Framework**: Next.js 14+ (App Router)
+- **Framework**: Next.js 16+ (App Router with Turbopack)
 - **Language**: TypeScript
 - **Styling**: TailwindCSS
 - **State Management**: Zustand (with persist middleware)
 - **Editor**: TipTap (rich text editor)
+- **Collaboration**: Socket.IO + Yjs
+- **Database**: Supabase (PostgreSQL)
+- **Real-Time**: WebSocket + Supabase Realtime
 - **Drag-and-Drop**: dnd-kit
 - **Icons**: Lucide React
-- **Storage**: LocalStorage (browser-based)
+- **Storage**: Supabase + LocalStorage fallback
 
 ## ✨ Key Features
 
-### Rich Text Documents
+### Collaborative Rich Text Documents
+- **Real-Time Collaboration**: Multiple users can edit simultaneously
+- **Live Cursors**: See other users' cursor positions in real-time
+- **User Presence**: Know who's online and editing
+- **Color-Coded Users**: Each user has a unique color identifier
 - Full formatting toolbar (bold, italic, headings, lists, etc.)
 - Tables, code blocks, and task lists
 - Markdown shortcuts
-- Auto-save to localStorage
+- Auto-save with Supabase integration
 - Version history with restore
 - @mentions support (UI)
 
@@ -81,22 +107,28 @@ Comprehensive documentation is available in the `/docs` folder:
 - Human-readable timestamps
 
 ### Multi-Project Workspace
-- Switch between projects via sidebar
+- Create unlimited projects with descriptions
+- Easy project switching via sidebar dropdown
+- Dedicated project manager UI
 - Isolated documents and boards per project
 - Team member roles per project
+- Delete projects when no longer needed
 
 ## 📦 Project Structure
 
 ```
 /app                    # Next.js App Router pages
 /components             # React components
-  /editor              # TipTap editor components
+  /editor              # TipTap editor + collaboration components
   /kanban              # Kanban board components
   /layout              # Layout components
+  /project             # Project management components
   /ui                  # Reusable UI components
+/server                # WebSocket server for real-time collaboration
+/hooks                 # Custom React hooks (including collaboration)
 /store                 # Zustand state stores
-/lib                   # Utilities and types
-/docs                  # Documentation
+/lib                   # Utilities, types, and Supabase client
+/docs                  # Documentation (including setup guides)
 ```
 
 ## 🏗️ Building for Production
@@ -126,11 +158,22 @@ npm run lint
 - Works on Netlify, Cloudflare Pages, AWS Amplify
 - Static export not supported (uses Next.js API features)
 
+## ✨ NEW: Real-Time Collaboration Features
+
+Froncort now supports real-time collaborative editing! 🎉
+
+- **Multi-User Editing**: Multiple users can edit documents simultaneously
+- **Live Cursors**: See where other users are typing with color-coded cursors
+- **User Presence**: Track who's online and editing in real-time
+- **WebSocket Server**: Real-time communication between users
+- **Supabase Integration**: Cloud database for data persistence
+- **Multiple Projects**: Create and manage multiple projects easily
+
+See [COLLABORATION_FEATURES.md](./docs/COLLABORATION_FEATURES.md) for complete documentation.
+
 ## ⚠️ Known Limitations
 
-- **Local Storage Only**: Data is browser-specific, not synced
-- **No Real Collaboration**: Multi-user editing is simulated
-- **No Backend**: All logic runs client-side
+- **Requires Setup**: WebSocket server and Supabase configuration needed (see setup guides)
 - **No Search**: Global search not yet implemented
 - **Single Board**: One board per project currently
 
