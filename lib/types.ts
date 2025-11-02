@@ -108,7 +108,7 @@ export interface Activity {
   resourceId: string; // ID of the page or card
   resourceType: 'page' | 'card';
   description: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   createdAt: Date;
 }
 

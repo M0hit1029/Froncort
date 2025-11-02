@@ -1,39 +1,45 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { MainLayout } from '@/components/layout/main-layout';
 import { TipTapEditor } from '@/components/editor/tiptap-editor';
+import { VersionHistory } from '@/components/editor/version-history';
 import { useDocumentStore } from '@/store/document-store';
 import { useProjectStore } from '@/store/project-store';
 import { useAuthStore } from '@/store/auth-store';
 import { useActivityStore } from '@/store/activity-store';
 import { generateMockPage } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
-import { Plus, FileText, Clock, Users } from 'lucide-react';
+import { Plus, FileText, Clock, Users, History } from 'lucide-react';
 import { DocumentPage } from '@/lib/types';
 
 export default function DocumentsPage() {
-  const { pages, addPage, updatePage, getPagesByProject } = useDocumentStore();
+  const { addPage, updatePage, getPagesByProject, addVersion } = useDocumentStore();
   const { currentProjectId } = useProjectStore();
   const { user } = useAuthStore();
   const { addActivity } = useActivityStore();
   const [selectedPageId, setSelectedPageId] = useState<string | null>(null);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const saveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastContentRef = useRef<string>('');
 
-  const projectPages = currentProjectId
-    ? getPagesByProject(currentProjectId)
-    : [];
+  const projectPages = useMemo(
+    () => (currentProjectId ? getPagesByProject(currentProjectId) : []),
+    [currentProjectId, getPagesByProject]
+  );
 
   useEffect(() => {
     // Create initial page if none exists
     if (currentProjectId && projectPages.length === 0) {
       const mockPage = generateMockPage(currentProjectId);
       addPage(mockPage);
-      setSelectedPageId(mockPage.id);
+      // Use setTimeout to avoid setState in effect
+      setTimeout(() => setSelectedPageId(mockPage.id), 0);
     } else if (projectPages.length > 0 && !selectedPageId) {
-      setSelectedPageId(projectPages[0].id);
+      setTimeout(() => setSelectedPageId(projectPages[0].id), 0);
     }
-  }, [currentProjectId, projectPages.length, addPage, selectedPageId]);
+  }, [currentProjectId, projectPages, addPage, selectedPageId]);
 
   const selectedPage = projectPages.find((p) => p.id === selectedPageId);
 
@@ -41,6 +47,25 @@ export default function DocumentsPage() {
     if (selectedPageId && user) {
       updatePage(selectedPageId, content, user.id);
       setLastSaved(new Date());
+
+      // Clear existing timer
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+      }
+
+      // Create version after 30 seconds of inactivity
+      saveTimerRef.current = setTimeout(() => {
+        if (content !== lastContentRef.current) {
+          addVersion(selectedPageId, {
+            id: `version-${Date.now()}`,
+            content,
+            createdAt: new Date(),
+            createdBy: user.id,
+            message: 'Auto-saved version',
+          });
+          lastContentRef.current = content;
+        }
+      }, 30000);
 
       // Add activity
       if (currentProjectId) {
@@ -136,9 +161,19 @@ export default function DocumentsPage() {
             <>
               {/* Header */}
               <div className="bg-white border-b border-gray-200 p-4">
-                <h1 className="text-2xl font-bold mb-2">
-                  {selectedPage.title}
-                </h1>
+                <div className="flex items-center justify-between mb-2">
+                  <h1 className="text-2xl font-bold">
+                    {selectedPage.title}
+                  </h1>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowVersionHistory(true)}
+                  >
+                    <History size={16} className="mr-2" />
+                    Version History
+                  </Button>
+                </div>
                 <div className="flex items-center gap-4 text-sm text-gray-600">
                   <div className="flex items-center gap-1">
                     <Clock size={14} />
@@ -174,6 +209,14 @@ export default function DocumentsPage() {
             </div>
           )}
         </div>
+
+        {/* Version History Modal */}
+        {showVersionHistory && selectedPage && (
+          <VersionHistory
+            page={selectedPage}
+            onClose={() => setShowVersionHistory(false)}
+          />
+        )}
       </div>
     </MainLayout>
   );

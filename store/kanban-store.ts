@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { KanbanBoard, KanbanCard, KanbanColumn } from '@/lib/types';
+import { KanbanBoard, KanbanCard } from '@/lib/types';
 
 interface KanbanState {
   boards: KanbanBoard[];

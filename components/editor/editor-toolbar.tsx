@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Editor } from '@tiptap/react';
-import { Button } from '@/components/ui/button';
 import {
   Bold,
   Italic,
@@ -27,34 +26,35 @@ interface EditorToolbarProps {
   editor: Editor;
 }
 
+const ToolbarButton = ({
+  onClick,
+  isActive = false,
+  disabled = false,
+  children,
+  title,
+}: {
+  onClick: () => void;
+  isActive?: boolean;
+  disabled?: boolean;
+  children: React.ReactNode;
+  title: string;
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    disabled={disabled}
+    title={title}
+    className={cn(
+      'p-2 rounded hover:bg-gray-100 transition-colors',
+      isActive && 'bg-gray-200',
+      disabled && 'opacity-50 cursor-not-allowed'
+    )}
+  >
+    {children}
+  </button>
+);
+
 export function EditorToolbar({ editor }: EditorToolbarProps) {
-  const ToolbarButton = ({
-    onClick,
-    isActive = false,
-    disabled = false,
-    children,
-    title,
-  }: {
-    onClick: () => void;
-    isActive?: boolean;
-    disabled?: boolean;
-    children: React.ReactNode;
-    title: string;
-  }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      title={title}
-      className={cn(
-        'p-2 rounded hover:bg-gray-100 transition-colors',
-        isActive && 'bg-gray-200',
-        disabled && 'opacity-50 cursor-not-allowed'
-      )}
-    >
-      {children}
-    </button>
-  );
 
   const addLink = () => {
     const url = window.prompt('Enter URL:');

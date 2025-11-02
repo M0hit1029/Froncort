@@ -4,9 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useProjectStore } from '@/store/project-store';
-import { FileText, Kanban, Activity, FolderOpen, Plus } from 'lucide-react';
+import { FileText, Kanban, Activity, FolderOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 
 export function Sidebar() {
   const pathname = usePathname();

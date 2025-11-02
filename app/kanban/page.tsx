@@ -9,7 +9,7 @@ import { generateMockKanbanBoard } from '@/lib/mock-data';
 import { Kanban as KanbanIcon } from 'lucide-react';
 
 export default function KanbanPage() {
-  const { boards, addBoard, getBoardsByProject } = useKanbanStore();
+  const { addBoard, getBoardsByProject } = useKanbanStore();
   const { currentProjectId } = useProjectStore();
 
   const projectBoards = currentProjectId
