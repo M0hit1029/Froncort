@@ -43,7 +43,7 @@ export function generateMockProject(): Project {
 
 export function generateMockPage(projectId: string): DocumentPage {
   return {
-    id: `page-${Date.now()}`,
+    id: `page-${crypto.randomUUID()}`,
     projectId,
     title: 'Getting Started',
     content: JSON.stringify({
@@ -74,37 +74,37 @@ export function generateMockPage(projectId: string): DocumentPage {
 }
 
 export function generateMockKanbanBoard(projectId: string): KanbanBoard {
-  const timestamp = Date.now();
+  const boardId = crypto.randomUUID();
   return {
-    id: `board-${timestamp}`,
+    id: `board-${boardId}`,
     projectId,
     name: 'Sprint Board',
     columns: [
       {
-        id: `col-${timestamp}-1`,
+        id: `col-${crypto.randomUUID()}`,
         title: 'To Do',
         order: 0,
         cards: [
           {
-            id: `card-${timestamp}-1`,
+            id: `card-${crypto.randomUUID()}`,
             title: 'Setup authentication',
             description: 'Implement user authentication flow',
             createdAt: new Date('2024-01-01'),
             updatedAt: new Date(),
             createdBy: 'user-1',
             order: 0,
-            labels: [{ id: `label-${timestamp}-1`, name: 'Feature', color: '#3b82f6' }],
+            labels: [{ id: `label-${crypto.randomUUID()}`, name: 'Feature', color: '#3b82f6' }],
           },
         ],
       },
       {
-        id: `col-${timestamp}-2`,
+        id: `col-${crypto.randomUUID()}`,
         title: 'In Progress',
         order: 1,
         cards: [],
       },
       {
-        id: `col-${timestamp}-3`,
+        id: `col-${crypto.randomUUID()}`,
         title: 'Done',
         order: 2,
         cards: [],

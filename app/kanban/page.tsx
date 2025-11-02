@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MainLayout } from '@/components/layout/main-layout';
 import { KanbanBoard } from '@/components/kanban/kanban-board';
 import { useKanbanStore } from '@/store/kanban-store';
@@ -11,14 +11,16 @@ import { Kanban as KanbanIcon } from 'lucide-react';
 export default function KanbanPage() {
   const { addBoard, getBoardsByProject } = useKanbanStore();
   const { currentProjectId } = useProjectStore();
+  const initializedRef = useRef(false);
 
   const projectBoards = currentProjectId
     ? getBoardsByProject(currentProjectId)
     : [];
 
   useEffect(() => {
-    // Create initial board if none exists
-    if (currentProjectId && projectBoards.length === 0) {
+    // Create initial board if none exists and we haven't initialized yet
+    if (currentProjectId && projectBoards.length === 0 && !initializedRef.current) {
+      initializedRef.current = true;
       const mockBoard = generateMockKanbanBoard(currentProjectId);
       addBoard(mockBoard);
     }

@@ -23,6 +23,7 @@ export default function DocumentsPage() {
   const [showVersionHistory, setShowVersionHistory] = useState(false);
   const saveTimerRef = useRef<NodeJS.Timeout | null>(null);
   const lastContentRef = useRef<string>('');
+  const initializedRef = useRef(false);
 
   const projectPages = useMemo(
     () => (currentProjectId ? getPagesByProject(currentProjectId) : []),
@@ -30,8 +31,9 @@ export default function DocumentsPage() {
   );
 
   useEffect(() => {
-    // Create initial page if none exists
-    if (currentProjectId && projectPages.length === 0) {
+    // Create initial page if none exists and we haven't initialized yet
+    if (currentProjectId && projectPages.length === 0 && !initializedRef.current) {
+      initializedRef.current = true;
       const mockPage = generateMockPage(currentProjectId);
       addPage(mockPage);
       // Use setTimeout to avoid setState in effect
