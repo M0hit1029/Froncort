@@ -20,7 +20,13 @@ export const useKanbanStore = create<KanbanState>()(
     (set, get) => ({
       boards: [],
       addBoard: (board) =>
-        set((state) => ({ boards: [...state.boards, board] })),
+        set((state) => {
+          // Prevent adding duplicate boards
+          if (state.boards.some((b) => b.id === board.id)) {
+            return state;
+          }
+          return { boards: [...state.boards, board] };
+        }),
       updateBoard: (id, updates) =>
         set((state) => ({
           boards: state.boards.map((b) =>

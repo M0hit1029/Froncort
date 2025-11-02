@@ -18,7 +18,13 @@ export const useDocumentStore = create<DocumentState>()(
     (set, get) => ({
       pages: [],
       addPage: (page) =>
-        set((state) => ({ pages: [...state.pages, page] })),
+        set((state) => {
+          // Prevent adding duplicate pages
+          if (state.pages.some((p) => p.id === page.id)) {
+            return state;
+          }
+          return { pages: [...state.pages, page] };
+        }),
       updatePage: (id, content, userId) =>
         set((state) => ({
           pages: state.pages.map((p) =>

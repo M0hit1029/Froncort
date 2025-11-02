@@ -43,7 +43,7 @@ export function generateMockProject(): Project {
 
 export function generateMockPage(projectId: string): DocumentPage {
   return {
-    id: 'page-1',
+    id: `page-${Date.now()}`,
     projectId,
     title: 'Getting Started',
     content: JSON.stringify({
@@ -74,36 +74,37 @@ export function generateMockPage(projectId: string): DocumentPage {
 }
 
 export function generateMockKanbanBoard(projectId: string): KanbanBoard {
+  const timestamp = Date.now();
   return {
-    id: 'board-1',
+    id: `board-${timestamp}`,
     projectId,
     name: 'Sprint Board',
     columns: [
       {
-        id: 'col-1',
+        id: `col-${timestamp}-1`,
         title: 'To Do',
         order: 0,
         cards: [
           {
-            id: 'card-1',
+            id: `card-${timestamp}-1`,
             title: 'Setup authentication',
             description: 'Implement user authentication flow',
             createdAt: new Date('2024-01-01'),
             updatedAt: new Date(),
             createdBy: 'user-1',
             order: 0,
-            labels: [{ id: 'label-1', name: 'Feature', color: '#3b82f6' }],
+            labels: [{ id: `label-${timestamp}-1`, name: 'Feature', color: '#3b82f6' }],
           },
         ],
       },
       {
-        id: 'col-2',
+        id: `col-${timestamp}-2`,
         title: 'In Progress',
         order: 1,
         cards: [],
       },
       {
-        id: 'col-3',
+        id: `col-${timestamp}-3`,
         title: 'Done',
         order: 2,
         cards: [],
