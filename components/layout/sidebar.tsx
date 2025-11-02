@@ -1,16 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useProjectStore } from '@/store/project-store';
-import { FileText, Kanban, Activity, FolderOpen } from 'lucide-react';
+import { FileText, Kanban, Activity, FolderOpen, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ProjectManager } from '@/components/project/project-manager';
 
 export function Sidebar() {
   const pathname = usePathname();
   const { projects, currentProjectId, setCurrentProject } = useProjectStore();
   const currentProject = projects.find((p) => p.id === currentProjectId);
+  const [showProjectManager, setShowProjectManager] = useState(false);
 
   const navigation = [
     {
@@ -53,6 +55,13 @@ export function Sidebar() {
                   {currentProject.name}
                 </span>
               </div>
+              <button
+                onClick={() => setShowProjectManager(true)}
+                className="text-gray-400 hover:text-white transition-colors"
+                title="Manage Projects"
+              >
+                <Settings size={16} />
+              </button>
             </div>
             {projects.length > 1 && (
               <select
@@ -69,7 +78,14 @@ export function Sidebar() {
             )}
           </div>
         ) : (
-          <div className="text-sm text-gray-400">No project selected</div>
+          <div className="text-sm text-gray-400">
+            <button
+              onClick={() => setShowProjectManager(true)}
+              className="text-blue-400 hover:text-blue-300 underline"
+            >
+              Create a project
+            </button>
+          </div>
         )}
       </div>
 
@@ -102,6 +118,11 @@ export function Sidebar() {
           <div className="text-xs">admin@froncort.ai</div>
         </div>
       </div>
+
+      {/* Project Manager Modal */}
+      {showProjectManager && (
+        <ProjectManager onClose={() => setShowProjectManager(false)} />
+      )}
     </div>
   );
 }

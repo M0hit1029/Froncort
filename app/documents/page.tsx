@@ -2,15 +2,17 @@
 
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { MainLayout } from '@/components/layout/main-layout';
-import { TipTapEditor } from '@/components/editor/tiptap-editor';
+import { CollaborativeEditor } from '@/components/editor/collaborative-editor';
+import { ActiveUsers } from '@/components/editor/active-users';
 import { VersionHistory } from '@/components/editor/version-history';
 import { useDocumentStore } from '@/store/document-store';
 import { useProjectStore } from '@/store/project-store';
 import { useAuthStore } from '@/store/auth-store';
 import { useActivityStore } from '@/store/activity-store';
+import { useCollaboration } from '@/hooks/useCollaboration';
 import { generateMockPage } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
-import { Plus, FileText, Clock, Users, History } from 'lucide-react';
+import { Plus, FileText, Clock, History, Wifi, WifiOff } from 'lucide-react';
 import { DocumentPage } from '@/lib/types';
 
 export default function DocumentsPage() {
@@ -45,6 +47,20 @@ export default function DocumentsPage() {
 
   const selectedPage = projectPages.find((p) => p.id === selectedPageId);
 
+  // Collaboration hook
+  const {
+    isConnected,
+    activeUsers,
+    error: collaborationError,
+    sendEdit,
+    sendCursorPosition,
+    sendSelection,
+  } = useCollaboration({
+    documentId: selectedPageId || '',
+    user: user || { id: '', name: '', email: '', color: '' },
+    enabled: !!selectedPageId && !!user,
+  });
+
   const handleContentChange = (content: string) => {
     if (selectedPageId && user) {
       updatePage(selectedPageId, content, user.id);
@@ -68,6 +84,9 @@ export default function DocumentsPage() {
           lastContentRef.current = content;
         }
       }, 30000);
+
+      // Send edit to WebSocket
+      sendEdit({ content });
 
       // Add activity
       if (currentProjectId) {
@@ -185,19 +204,29 @@ export default function DocumentsPage() {
                         : 'Auto-saving...'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Users size={14} />
-                    <span>1 person editing</span>
+                  <div className="flex items-center gap-2">
+                    {isConnected ? (
+                      <Wifi size={14} className="text-green-600" />
+                    ) : (
+                      <WifiOff size={14} className="text-gray-400" />
+                    )}
+                    <ActiveUsers users={activeUsers} isConnected={isConnected} />
                   </div>
+                  {collaborationError && (
+                    <span className="text-xs text-orange-600">{collaborationError}</span>
+                  )}
                 </div>
               </div>
 
               {/* Editor */}
               <div className="flex-1 overflow-y-auto p-8">
                 <div className="max-w-4xl mx-auto">
-                  <TipTapEditor
+                  <CollaborativeEditor
                     content={selectedPage.content}
                     onChange={handleContentChange}
+                    onCursorMove={sendCursorPosition}
+                    onSelectionChange={sendSelection}
+                    collaborators={activeUsers}
                   />
                 </div>
               </div>
