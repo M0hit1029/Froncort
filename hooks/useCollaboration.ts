@@ -55,7 +55,13 @@ export function useCollaboration({
   useEffect(() => {
     if (!enabled || !documentId || !user) return;
 
-    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3001';
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL;
+    
+    if (!wsUrl) {
+      console.warn('NEXT_PUBLIC_WS_URL not configured. Collaboration features will not work.');
+      // Error state will be set by connect_error event
+      return;
+    }
 
     try {
       const socket = io(wsUrl, {

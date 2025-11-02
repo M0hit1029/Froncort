@@ -34,11 +34,16 @@ interface UserPresence {
   lastSeen: Date;
 }
 
+// Configuration constants
+const STALE_CONNECTION_TIMEOUT = 60000; // 60 seconds
+const CLEANUP_INTERVAL = 30000; // 30 seconds
+const DEFAULT_PORT = 3001;
+
 // Store active users and their presence
 const presenceStore = new Map<string, Map<string, UserPresence>>();
 const documentVersions = new Map<string, number>();
 
-export function createWebSocketServer(port: number = 3001) {
+export function createWebSocketServer(port: number = DEFAULT_PORT) {
   const httpServer = createServer();
   const io = new Server(httpServer, {
     cors: {
@@ -76,10 +81,10 @@ export function createWebSocketServer(port: number = 3001) {
         timestamp: new Date(),
       });
 
-      const presenceList = Array.from(docPresence.values())
-        .filter((p) => p.userId !== user.id)
-        .map((p) => ({
-          socketId: socket.id,
+      const presenceList = Array.from(docPresence.entries())
+        .filter(([, p]) => p.userId !== user.id)
+        .map(([socketId, p]) => ({
+          socketId,
           user: p.user,
           cursorPosition: p.cursorPosition,
           selection: p.selection,
@@ -182,7 +187,7 @@ export function createWebSocketServer(port: number = 3001) {
     const now = Date.now();
     presenceStore.forEach((docPresence, documentId) => {
       docPresence.forEach((presence, socketId) => {
-        if (now - presence.lastSeen.getTime() > 60000) {
+        if (now - presence.lastSeen.getTime() > STALE_CONNECTION_TIMEOUT) {
           docPresence.delete(socketId);
           io.to(`doc:${documentId}`).emit('user-left', {
             socketId,
@@ -192,7 +197,7 @@ export function createWebSocketServer(port: number = 3001) {
         }
       });
     });
-  }, 30000);
+  }, CLEANUP_INTERVAL);
 
   httpServer.listen(port, () => {
     console.log(`WebSocket server running on port ${port}`);
