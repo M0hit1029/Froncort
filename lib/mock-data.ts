@@ -28,7 +28,7 @@ export const CURRENT_USER: AuthUser = {
 
 export function generateMockProject(): Project {
   return {
-    id: 'project-1',
+    id: `project-${crypto.randomUUID()}`,
     name: 'Froncort Platform',
     description: 'Main development project for Froncort AI platform',
     createdAt: new Date('2024-01-01'),
