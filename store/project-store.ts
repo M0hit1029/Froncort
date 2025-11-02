@@ -46,7 +46,7 @@ export const useProjectStore = create<ProjectState>()(
       },
     }),
     {
-      name: 'project-storage',
+      name: 'project-storage-v2',
     }
   )
 );

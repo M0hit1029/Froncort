@@ -34,7 +34,7 @@ export const useActivityStore = create<ActivityState>()(
       clearActivities: () => set({ activities: [] }),
     }),
     {
-      name: 'activity-storage',
+      name: 'activity-storage-v2',
     }
   )
 );
