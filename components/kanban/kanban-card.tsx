@@ -81,7 +81,7 @@ export function KanbanCardItem({ card, boardId }: KanbanCardItemProps) {
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm hover:bg-gray-300"
+                  className="px-3 py-1 bg-gray-200 text-black rounded text-sm hover:bg-gray-300"
                 >
                   Cancel
                 </button>
@@ -91,7 +91,7 @@ export function KanbanCardItem({ card, boardId }: KanbanCardItemProps) {
             <div onClick={() => setIsEditing(true)}>
               <h4 className="font-medium mb-2">{card.title}</h4>
               {card.description && (
-                <p className="text-sm text-gray-600 mb-3">
+                <p className="text-sm text-black mb-3">
                   {card.description}
                 </p>
               )}
@@ -111,7 +111,7 @@ export function KanbanCardItem({ card, boardId }: KanbanCardItemProps) {
                 ))}
               </div>
 
-              <div className="flex items-center gap-4 text-sm text-gray-500">
+              <div className="flex items-center gap-4 text-sm text-black">
                 {card.assigneeId && (
                   <div className="flex items-center gap-1">
                     <User size={14} />

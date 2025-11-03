@@ -163,8 +163,8 @@ export default function DocumentsPage() {
                 onClick={() => setSelectedPageId(page.id)}
                 className={`w-full text-left px-3 py-2 rounded-lg mb-1 transition-colors ${
                   selectedPageId === page.id
-                    ? 'bg-blue-50 text-blue-900 font-medium'
-                    : 'hover:bg-gray-50'
+                    ? 'bg-blue-50 text-black font-medium'
+                    : 'hover:bg-gray-50 text-black'
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -195,7 +195,7 @@ export default function DocumentsPage() {
                     Version History
                   </Button>
                 </div>
-                <div className="flex items-center gap-4 text-sm text-gray-600">
+                <div className="flex items-center gap-4 text-sm text-black">
                   <div className="flex items-center gap-1">
                     <Clock size={14} />
                     <span>
@@ -206,14 +206,14 @@ export default function DocumentsPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     {isConnected ? (
-                      <Wifi size={14} className="text-green-600" />
+                      <Wifi size={14} className="text-black" />
                     ) : (
-                      <WifiOff size={14} className="text-gray-400" />
+                      <WifiOff size={14} className="text-black" />
                     )}
                     <ActiveUsers users={activeUsers} isConnected={isConnected} />
                   </div>
                   {collaborationError && (
-                    <span className="text-xs text-orange-600">{collaborationError}</span>
+                    <span className="text-xs text-black">{collaborationError}</span>
                   )}
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function DocumentsPage() {
             </>
           ) : (
             <div className="flex items-center justify-center h-full">
-              <div className="text-center text-gray-500">
+              <div className="text-center text-black">
                 <FileText size={48} className="mx-auto mb-4 opacity-50" />
                 <p>Select a page or create a new one</p>
               </div>

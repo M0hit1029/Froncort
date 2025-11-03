@@ -2,11 +2,44 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useProjectStore } from '@/store/project-store';
-import { FileText, Kanban, Activity, FolderOpen, Settings } from 'lucide-react';
+import { useAuthStore } from '@/store/auth-store';
+import { FileText, Kanban, Activity, FolderOpen, Settings, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ProjectManager } from '@/components/project/project-manager';
+import { supabase } from '@/lib/supabase';
+
+function UserSection() {
+  const { user, logout } = useAuthStore();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    logout();
+    router.push('/login');
+  };
+
+  if (!user) return null;
+
+  return (
+    <div className="p-4 border-t border-gray-800">
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-gray-400 flex-1 min-w-0">
+          <div className="font-medium text-white truncate">{user.name}</div>
+          <div className="text-xs truncate">{user.email}</div>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="text-gray-400 hover:text-white transition-colors ml-2"
+          title="Logout"
+        >
+          <LogOut size={18} />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -112,12 +145,7 @@ export function Sidebar() {
       </nav>
 
       {/* User Section */}
-      <div className="p-4 border-t border-gray-800">
-        <div className="text-sm text-gray-400">
-          <div className="font-medium text-white">Demo User</div>
-          <div className="text-xs">admin@froncort.ai</div>
-        </div>
-      </div>
+      <UserSection />
 
       {/* Project Manager Modal */}
       {showProjectManager && (

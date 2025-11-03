@@ -57,7 +57,7 @@ export function VersionHistory({ page, onClose }: VersionHistoryProps) {
 
         <CardContent className="flex-1 overflow-auto">
           {page.versions.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-black">
               <p>No version history available</p>
               <p className="text-sm mt-2">
                 Versions will be saved automatically as you edit
@@ -69,13 +69,13 @@ export function VersionHistory({ page, onClose }: VersionHistoryProps) {
               <div className="border border-blue-200 bg-blue-50 rounded-lg p-4">
                 <div className="flex items-start justify-between">
                   <div>
-                    <div className="font-medium text-blue-900">
+                    <div className="font-medium text-black">
                       Current Version
                     </div>
-                    <div className="text-sm text-blue-700 mt-1">
+                    <div className="text-sm text-black mt-1">
                       Last edited by {getUserName(page.lastEditedBy)}
                     </div>
-                    <div className="text-xs text-blue-600 mt-1">
+                    <div className="text-xs text-black mt-1">
                       {formatDate(page.updatedAt)}
                     </div>
                   </div>
@@ -99,10 +99,10 @@ export function VersionHistory({ page, onClose }: VersionHistoryProps) {
                         <div className="font-medium">
                           {version.message || 'Version'}
                         </div>
-                        <div className="text-sm text-gray-600 mt-1">
+                        <div className="text-sm text-black mt-1">
                           by {getUserName(version.createdBy)}
                         </div>
-                        <div className="text-xs text-gray-500 mt-1">
+                        <div className="text-xs text-black mt-1">
                           {formatDate(version.createdAt)}
                         </div>
                       </div>

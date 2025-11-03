@@ -21,17 +21,17 @@ export default function ActivityPage() {
       case 'page_created':
       case 'page_edited':
       case 'page_deleted':
-        return <FileText size={16} className="text-blue-600" />;
+        return <FileText size={16} className="text-black" />;
       case 'card_created':
       case 'card_moved':
       case 'card_edited':
       case 'card_deleted':
-        return <Square size={16} className="text-green-600" />;
+        return <Square size={16} className="text-black" />;
       case 'user_mentioned':
       case 'user_assigned':
-        return <User size={16} className="text-purple-600" />;
+        return <User size={16} className="text-black" />;
       default:
-        return <Activity size={16} className="text-gray-600" />;
+        return <Activity size={16} className="text-black" />;
     }
   };
 
@@ -56,7 +56,7 @@ export default function ActivityPage() {
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <h1 className="text-2xl font-bold mb-2">Activity Feed</h1>
-          <p className="text-gray-600">
+          <p className="text-black">
             Track all changes and updates in your project
           </p>
         </div>
@@ -75,11 +75,11 @@ export default function ActivityPage() {
                           <span className="font-medium">
                             {getUserName(activity.userId)}
                           </span>{' '}
-                          <span className="text-gray-600">
+                          <span className="text-black">
                             {activity.description}
                           </span>
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-black mt-1">
                           {formatTimeAgo(activity.createdAt)}
                         </p>
                       </div>
@@ -89,7 +89,7 @@ export default function ActivityPage() {
               ))
             ) : (
               <div className="flex items-center justify-center py-12">
-                <div className="text-center text-gray-500">
+                <div className="text-center text-black">
                   <Activity size={48} className="mx-auto mb-4 opacity-50" />
                   <p>No activity yet</p>
                   <p className="text-sm mt-2">
