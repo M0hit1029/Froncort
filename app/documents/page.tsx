@@ -213,7 +213,7 @@ export default function DocumentsPage() {
                     <ActiveUsers users={activeUsers} isConnected={isConnected} />
                   </div>
                   {collaborationError && (
-                    <span className="text-xs text-black">{collaborationError}</span>
+                    <span className="text-xs text-red-600">{collaborationError}</span>
                   )}
                 </div>
               </div>

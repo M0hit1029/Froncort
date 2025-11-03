@@ -156,6 +156,14 @@ CREATE POLICY "Members can view project members" ON public.project_members
 
 CREATE POLICY "Project owners and admins can add members" ON public.project_members
   FOR INSERT WITH CHECK (
+    -- Allow project owner to add first member (themselves)
+    EXISTS (
+      SELECT 1 FROM public.projects
+      WHERE projects.id = project_members.project_id
+        AND projects.owner_id = auth.uid()
+    )
+    OR
+    -- Allow existing owners/admins to add other members
     EXISTS (
       SELECT 1 FROM public.project_members pm
       WHERE pm.project_id = project_members.project_id
