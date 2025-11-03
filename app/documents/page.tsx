@@ -206,9 +206,9 @@ export default function DocumentsPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     {isConnected ? (
-                      <Wifi size={14} className="text-black" />
+                      <Wifi size={14} className="text-green-600" />
                     ) : (
-                      <WifiOff size={14} className="text-black" />
+                      <WifiOff size={14} className="text-red-600" />
                     )}
                     <ActiveUsers users={activeUsers} isConnected={isConnected} />
                   </div>

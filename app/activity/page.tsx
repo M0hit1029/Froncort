@@ -21,17 +21,17 @@ export default function ActivityPage() {
       case 'page_created':
       case 'page_edited':
       case 'page_deleted':
-        return <FileText size={16} className="text-black" />;
+        return <FileText size={16} className="text-blue-600" />;
       case 'card_created':
       case 'card_moved':
       case 'card_edited':
       case 'card_deleted':
-        return <Square size={16} className="text-black" />;
+        return <Square size={16} className="text-green-600" />;
       case 'user_mentioned':
       case 'user_assigned':
-        return <User size={16} className="text-black" />;
+        return <User size={16} className="text-purple-600" />;
       default:
-        return <Activity size={16} className="text-black" />;
+        return <Activity size={16} className="text-gray-600" />;
     }
   };
 
