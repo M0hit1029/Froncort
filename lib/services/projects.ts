@@ -1,5 +1,5 @@
 import { supabase, SupabaseProject, isSupabaseConfigured } from '@/lib/supabase';
-import { Project } from '@/lib/types';
+import { Project, ProjectMember, UserRole } from '@/lib/types';
 
 /**
  * Convert Supabase project to app Project type
@@ -18,7 +18,7 @@ export function toProject(supabaseProject: SupabaseProject): Project {
 }
 
 /**
- * Fetch all projects the current user can access (own projects + public projects)
+ * Fetch all projects the current user can access (own projects + shared projects + public projects)
  */
 export async function fetchProjects(): Promise<{ data: Project[] | null; error: Error | null }> {
   if (!isSupabaseConfigured) {
@@ -41,6 +41,60 @@ export async function fetchProjects(): Promise<{ data: Project[] | null; error: 
     return { data: projects, error: null };
   } catch (err) {
     console.error('Unexpected error fetching projects:', err);
+    return { data: null, error: err as Error };
+  }
+}
+
+/**
+ * Fetch a single project with its members
+ */
+export async function fetchProjectWithMembers(
+  projectId: string
+): Promise<{ data: Project | null; error: Error | null }> {
+  if (!isSupabaseConfigured) {
+    console.warn('Supabase not configured, skipping project fetch');
+    return { data: null, error: null };
+  }
+
+  try {
+    // Fetch project
+    const { data: projectData, error: projectError } = await supabase
+      .from('projects')
+      .select('*')
+      .eq('id', projectId)
+      .single();
+
+    if (projectError) {
+      console.error('Error fetching project:', projectError);
+      return { data: null, error: new Error(projectError.message) };
+    }
+
+    // Fetch project members
+    const { data: membersData, error: membersError } = await supabase
+      .from('project_members')
+      .select('*')
+      .eq('project_id', projectId);
+
+    if (membersError) {
+      console.error('Error fetching project members:', membersError);
+      // Continue without members if there's an error
+    }
+
+    const members: ProjectMember[] =
+      membersData?.map((row) => ({
+        userId: row.user_id,
+        role: row.role as UserRole,
+        addedAt: new Date(row.added_at),
+      })) || [];
+
+    const project: Project = {
+      ...toProject(projectData),
+      members,
+    };
+
+    return { data: project, error: null };
+  } catch (err) {
+    console.error('Unexpected error fetching project with members:', err);
     return { data: null, error: err as Error };
   }
 }

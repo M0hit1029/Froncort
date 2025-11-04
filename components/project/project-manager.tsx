@@ -6,7 +6,8 @@ import { useAuthStore } from '@/store/auth-store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, X, FolderOpen, Trash2, CheckCircle, AlertCircle, Globe, Lock } from 'lucide-react';
+import { Plus, X, FolderOpen, Trash2, CheckCircle, AlertCircle, Globe, Lock, Share2 } from 'lucide-react';
+import { ProjectSharing } from './project-sharing';
 
 interface ProjectManagerProps {
   onClose: () => void;
@@ -21,6 +22,7 @@ export function ProjectManager({ onClose }: ProjectManagerProps) {
   const [newProjectVisibility, setNewProjectVisibility] = useState<'public' | 'private'>('private');
   const [isCreating, setIsCreating] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [sharingProjectId, setSharingProjectId] = useState<string | null>(null);
 
   // Load projects on mount
   useEffect(() => {
@@ -81,6 +83,13 @@ export function ProjectManager({ onClose }: ProjectManagerProps) {
     setCurrentProject(projectId);
     onClose();
   };
+
+  const handleShareProject = (projectId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSharingProjectId(projectId);
+  };
+
+  const sharingProject = sharingProjectId ? projects.find(p => p.id === sharingProjectId) : null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -206,11 +215,28 @@ export function ProjectManager({ onClose }: ProjectManagerProps) {
                           Created {new Date(project.createdAt).toLocaleDateString()}
                         </div>
                       </div>
-                      {isOwner && (
-                        <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleDeleteProject(project.id); }} className="text-red-600">
-                          <Trash2 size={16} />
-                        </Button>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {isOwner && (
+                          <>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={(e) => handleShareProject(project.id, e)}
+                              title="Share project"
+                            >
+                              <Share2 size={16} />
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={(e) => { e.stopPropagation(); handleDeleteProject(project.id); }} 
+                              className="text-red-600"
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
@@ -222,6 +248,15 @@ export function ProjectManager({ onClose }: ProjectManagerProps) {
           <Button onClick={onClose} variant="outline" className="w-full">Close</Button>
         </div>
       </div>
+
+      {sharingProject && (
+        <ProjectSharing
+          projectId={sharingProject.id}
+          projectName={sharingProject.name}
+          ownerId={sharingProject.ownerId}
+          onClose={() => setSharingProjectId(null)}
+        />
+      )}
     </div>
   );
 }
