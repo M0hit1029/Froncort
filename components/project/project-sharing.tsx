@@ -45,10 +45,12 @@ export function ProjectSharing({ projectId, projectName, ownerId, onClose }: Pro
       const uniqueIds = [...new Set(userIds)];
       const detailsMap = new Map(userDetails);
       
+      // TODO: Implement proper user fetching from Supabase users table
+      // This is a placeholder implementation for development
+      // Production code should fetch user details like:
+      // const { data } = await supabase.from('users').select('id, email, name').in('id', uniqueIds);
       for (const userId of uniqueIds) {
         if (!detailsMap.has(userId)) {
-          // In a real app, we'd fetch from Supabase users table
-          // For now, we'll use a placeholder
           detailsMap.set(userId, {
             id: userId,
             email: `user-${userId.slice(0, 8)}@example.com`,

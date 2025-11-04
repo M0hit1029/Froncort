@@ -29,9 +29,11 @@ export default function ProjectDetailPage() {
   const { getActivitiesByProject } = useActivityStore();
 
   const project = projects.find(p => p.id === projectId);
-  const documents = getPagesByProject(projectId);
-  const boards = getBoardsByProject(projectId);
-  const activities = getActivitiesByProject(projectId);
+  
+  // Memoize expensive store queries to prevent unnecessary recalculations
+  const documents = React.useMemo(() => getPagesByProject(projectId), [projectId, getPagesByProject]);
+  const boards = React.useMemo(() => getBoardsByProject(projectId), [projectId, getBoardsByProject]);
+  const activities = React.useMemo(() => getActivitiesByProject(projectId), [projectId, getActivitiesByProject]);
 
   useEffect(() => {
     if (projectId) {
@@ -70,7 +72,7 @@ export default function ProjectDetailPage() {
             </div>
             <div className="flex items-center gap-1">
               <Users size={14} />
-              <span>{project.members.length} member{project.members.length !== 1 ? 's' : ''}</span>
+              <span>{project.members?.length || 0} member{(project.members?.length || 0) !== 1 ? 's' : ''}</span>
             </div>
           </div>
         </div>
