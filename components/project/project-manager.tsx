@@ -59,7 +59,7 @@ export function ProjectManager({ onClose }: ProjectManagerProps) {
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-2xl font-bold">Manage Projects</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          <button onClick={onClose} className="text-black hover:text-black">
             <X size={24} />
           </button>
         </div>
@@ -91,7 +91,7 @@ export function ProjectManager({ onClose }: ProjectManagerProps) {
           <div className="space-y-3">
             <h3 className="text-lg font-semibold mb-3">Your Projects</h3>
             {projects.length === 0 ? (
-              <div className="text-center text-gray-500 py-8">
+              <div className="text-center text-black py-8">
                 <FolderOpen size={48} className="mx-auto mb-3 opacity-50" />
                 <p>No projects yet. Create one to get started!</p>
               </div>
@@ -101,8 +101,8 @@ export function ProjectManager({ onClose }: ProjectManagerProps) {
                   <div className="flex items-start justify-between">
                     <div className="flex-1 cursor-pointer" onClick={() => handleSelectProject(project.id)}>
                       <h4 className="font-semibold text-lg mb-1">{project.name}</h4>
-                      {project.description && <p className="text-sm text-gray-600 mb-2">{project.description}</p>}
-                      <div className="text-xs text-gray-500">
+                      {project.description && <p className="text-sm text-black mb-2">{project.description}</p>}
+                      <div className="text-xs text-black">
                         Created {new Date(project.createdAt).toLocaleDateString()}
                       </div>
                     </div>

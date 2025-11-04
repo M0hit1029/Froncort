@@ -32,7 +32,7 @@ export default function KanbanPage() {
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <h1 className="text-2xl font-bold mb-2">Kanban Boards</h1>
-          <p className="text-gray-600">
+          <p className="text-black">
             Manage your tasks with drag-and-drop Kanban boards
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function KanbanPage() {
             </div>
           ) : (
             <div className="flex items-center justify-center h-full">
-              <div className="text-center text-gray-500">
+              <div className="text-center text-black">
                 <KanbanIcon size={48} className="mx-auto mb-4 opacity-50" />
                 <p>No boards found</p>
               </div>

@@ -27,7 +27,7 @@ export function KanbanColumn({ column, boardId }: KanbanColumnProps) {
       >
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold text-lg">{column.title}</h3>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-black">
             {column.cards.length}
           </span>
         </div>

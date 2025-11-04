@@ -29,6 +29,11 @@ cd Froncort
 # Install dependencies
 npm install
 
+# Set up Supabase (see SETUP_GUIDE.md for detailed instructions)
+# 1. Create a Supabase project
+# 2. Run the SQL migration in supabase/migrations/001_create_tables.sql
+# 3. Copy .env.example to .env.local and add your Supabase credentials
+
 # Run development server with WebSocket server
 npm run dev:all
 
@@ -42,19 +47,15 @@ npm run ws:dev
 # Open http://localhost:3000
 ```
 
-The app will automatically create a demo project and user on first load.
+You'll be redirected to the login page. Create an account to get started!
 
-### For Full Collaboration Features
+### For Full Setup Instructions
 
-1. Set up Supabase (see [SUPABASE_SETUP.md](./docs/SUPABASE_SETUP.md))
-2. Add credentials to `.env.local`:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-   NEXT_PUBLIC_WS_URL=ws://localhost:3001
-   ```
-3. Start both servers: `npm run dev:all`
-4. Open in multiple browsers to test collaboration
+See [SETUP_GUIDE.md](./SETUP_GUIDE.md) for complete setup instructions including:
+- Supabase project creation
+- Database migrations
+- Environment configuration
+- Testing collaboration features
 
 ## 📚 Documentation
 
@@ -81,8 +82,14 @@ Comprehensive documentation is available in the `/docs` folder:
 
 ## ✨ Key Features
 
+### Authentication & User Management
+- **Email/Password Authentication**: Secure signup and login via Supabase Auth
+- **User Profiles**: Each user has a unique profile with name, email, and color
+- **Session Management**: Persistent sessions with automatic refresh
+- **Logout Functionality**: Secure logout from any page
+
 ### Collaborative Rich Text Documents
-- **Real-Time Collaboration**: Multiple users can edit simultaneously
+- **Real-Time Collaboration**: Multiple users can edit simultaneously via WebSocket
 - **Live Cursors**: See other users' cursor positions in real-time
 - **User Presence**: Know who's online and editing
 - **Color-Coded Users**: Each user has a unique color identifier

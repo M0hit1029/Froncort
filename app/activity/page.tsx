@@ -56,7 +56,7 @@ export default function ActivityPage() {
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <h1 className="text-2xl font-bold mb-2">Activity Feed</h1>
-          <p className="text-gray-600">
+          <p className="text-black">
             Track all changes and updates in your project
           </p>
         </div>
@@ -75,11 +75,11 @@ export default function ActivityPage() {
                           <span className="font-medium">
                             {getUserName(activity.userId)}
                           </span>{' '}
-                          <span className="text-gray-600">
+                          <span className="text-black">
                             {activity.description}
                           </span>
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-black mt-1">
                           {formatTimeAgo(activity.createdAt)}
                         </p>
                       </div>
@@ -89,7 +89,7 @@ export default function ActivityPage() {
               ))
             ) : (
               <div className="flex items-center justify-center py-12">
-                <div className="text-center text-gray-500">
+                <div className="text-center text-black">
                   <Activity size={48} className="mx-auto mb-4 opacity-50" />
                   <p>No activity yet</p>
                   <p className="text-sm mt-2">
