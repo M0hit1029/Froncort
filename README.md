@@ -14,10 +14,11 @@ Froncort is a comprehensive project management and documentation platform built 
 
 - **Rich Text Editor**: Powered by TipTap with support for headings, lists, tables, code blocks, task lists, and more
 - **Kanban Boards**: Drag-and-drop task management with customizable columns
+- **Project Sharing**: Invite users to collaborate with role-based access control
 - **Version History**: Automatic version tracking with restore capabilities
 - **Activity Feed**: Real-time activity tracking across documents and boards
 - **Multi-Project Support**: Manage multiple projects with isolated workspaces
-- **Role-Based Access**: Owner, Admin, Editor, and Viewer roles (UI-enforced)
+- **Role-Based Access**: Owner, Admin, Editor, and Viewer roles enforced at database level
 
 ## 🚀 Quick Start
 
@@ -31,7 +32,7 @@ npm install
 
 # Set up Supabase (see SETUP_GUIDE.md for detailed instructions)
 # 1. Create a Supabase project
-# 2. Run the SQL migration in supabase/migrations/001_create_tables.sql
+# 2. Run all SQL migrations in supabase/migrations/ in order
 # 3. Copy .env.example to .env.local and add your Supabase credentials
 
 # Run development server with WebSocket server
@@ -64,6 +65,7 @@ Comprehensive documentation is available in the `/docs` folder:
 - **[README.md](./docs/README.md)** - Complete feature documentation
 - **[ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - System architecture and data flow
 - **[SETUP.md](./docs/SETUP.md)** - Detailed setup instructions
+- **[PROJECT_SHARING.md](./docs/PROJECT_SHARING.md)** - Project sharing and collaboration guide
 - **[LIMITATIONS.md](./docs/LIMITATIONS.md)** - Known limitations and future roadmap
 
 ## 🛠️ Technology Stack
@@ -113,12 +115,14 @@ Comprehensive documentation is available in the `/docs` folder:
 - Filter by user, project, or resource type
 - Human-readable timestamps
 
-### Multi-Project Workspace
+### Multi-Project Workspace & Sharing
 - Create unlimited projects with descriptions
+- Share projects with team members
+- Role-based access control (Owner, Admin, Editor, Viewer)
 - Easy project switching via sidebar dropdown
-- Dedicated project manager UI
+- Dedicated project manager UI with sharing controls
 - Isolated documents and boards per project
-- Team member roles per project
+- Automatic access to all project resources for shared members
 - Delete projects when no longer needed
 
 ## 📦 Project Structure
