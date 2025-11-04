@@ -1,7 +1,18 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
+
+// Validate environment variables
+const hasValidConfig = !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!hasValidConfig) {
+  console.error('❌ Supabase configuration error:', {
+    hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+    hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  });
+  console.error('Please ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set in your environment variables.');
+}
 
 // Create a single supabase client for interacting with your database
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -16,6 +27,22 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 });
 
+// Test connection on initialization (only in browser and with valid config)
+// Test with projects table since it's the primary table for the app
+if (typeof window !== 'undefined' && hasValidConfig) {
+  supabase.from('projects').select('count', { count: 'exact', head: true })
+    .then(({ error }) => {
+      if (error) {
+        console.error('❌ Supabase connection test failed:', error.message);
+      } else {
+        console.log('✅ Supabase connection successful');
+      }
+    });
+}
+
+// Export config validity flag
+export const isSupabaseConfigured = hasValidConfig;
+
 // Database types for Supabase tables
 export interface SupabaseProject {
   id: string;
@@ -24,6 +51,7 @@ export interface SupabaseProject {
   created_at: string;
   updated_at: string;
   owner_id: string;
+  visibility: 'public' | 'private';
 }
 
 export interface SupabaseDocument {

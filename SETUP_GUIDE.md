@@ -15,11 +15,25 @@ This guide will help you set up the Froncort application with Supabase authentic
 
 ## Step 2: Run Database Migrations
 
+### Migration 1: Create Tables
+
 1. In your Supabase project dashboard, go to the SQL Editor
 2. Open the file `supabase/migrations/001_create_tables.sql` from this repository
 3. Copy the entire SQL script and paste it into the SQL Editor
 4. Click "Run" to execute the migration
 5. Verify that all tables have been created by checking the "Table Editor" section
+
+### Migration 2: Add Project Visibility (NEW)
+
+1. In the SQL Editor, open a new query
+2. Copy the contents of `supabase/migrations/002_add_project_visibility.sql`
+3. Paste and run the migration
+4. This adds:
+   - `visibility` column to projects table
+   - Updated RLS policies for public/private projects
+   - Real-time subscription support
+
+For detailed information about project visibility, see [docs/PROJECT_VISIBILITY_SETUP.md](docs/PROJECT_VISIBILITY_SETUP.md)
 
 ## Step 3: Configure Environment Variables
 
