@@ -57,6 +57,14 @@ export function ProjectManager({ onClose }: ProjectManagerProps) {
     }
   };
 
+  const handleCancelCreate = () => {
+    setShowCreateForm(false);
+    setNewProjectName('');
+    setNewProjectDescription('');
+    setNewProjectVisibility('private');
+    setMessage(null);
+  };
+
   const handleDeleteProject = async (projectId: string) => {
     if (confirm('Delete this project? This will delete all documents and tasks.')) {
       const result = await deleteProjectFromStore(projectId);
@@ -155,7 +163,7 @@ export function ProjectManager({ onClose }: ProjectManagerProps) {
                   <Button onClick={handleCreateProject} disabled={!newProjectName.trim() || isCreating} className="flex-1">
                     {isCreating ? 'Creating...' : 'Create'}
                   </Button>
-                  <Button onClick={() => { setShowCreateForm(false); setNewProjectName(''); setNewProjectDescription(''); setNewProjectVisibility('private'); setMessage(null); }} variant="outline" className="flex-1" disabled={isCreating}>Cancel</Button>
+                  <Button onClick={handleCancelCreate} variant="outline" className="flex-1" disabled={isCreating}>Cancel</Button>
                 </div>
               </div>
             </div>

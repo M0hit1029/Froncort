@@ -168,6 +168,22 @@ export const useProjectStore = create<ProjectState>()(
         projects: state.projects,
         currentProjectId: state.currentProjectId,
       }),
+      // Migrate from v2 to v3: add visibility and ownerId to existing projects
+      migrate: (persistedState: unknown, version: number) => {
+        if (version === 2) {
+          const state = persistedState as { projects: Array<Partial<Project>>; currentProjectId: string | null };
+          return {
+            ...state,
+            projects: state.projects.map((project) => ({
+              ...project,
+              visibility: project.visibility || 'private',
+              ownerId: project.ownerId || project.members?.[0]?.userId || '',
+            })),
+          } as ProjectState;
+        }
+        return persistedState as ProjectState;
+      },
+      version: 3,
     }
   )
 );

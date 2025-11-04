@@ -94,14 +94,10 @@ export async function updateProject(
   }
 
   try {
-    const updateData: Record<string, unknown> = {
-      ...updates,
-      updated_at: new Date().toISOString(),
-    };
-
+    // Let the database handle updated_at via DEFAULT value
     const { data, error } = await supabase
       .from('projects')
-      .update(updateData)
+      .update(updates)
       .eq('id', id)
       .select()
       .single();

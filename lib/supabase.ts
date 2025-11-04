@@ -28,8 +28,9 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 });
 
 // Test connection on initialization (only in browser and with valid config)
+// Test with projects table since it's the primary table for the app
 if (typeof window !== 'undefined' && hasValidConfig) {
-  supabase.from('users').select('count', { count: 'exact', head: true })
+  supabase.from('projects').select('count', { count: 'exact', head: true })
     .then(({ error }) => {
       if (error) {
         console.error('❌ Supabase connection test failed:', error.message);
