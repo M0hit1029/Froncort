@@ -33,6 +33,8 @@ export function generateMockProject(): Project {
     description: 'Main development project for Froncort AI platform',
     createdAt: new Date('2024-01-01'),
     updatedAt: new Date(),
+    ownerId: 'user-1',
+    visibility: 'private',
     members: [
       { userId: 'user-1', role: 'admin', addedAt: new Date('2024-01-01') },
       { userId: 'user-2', role: 'editor', addedAt: new Date('2024-01-02') },

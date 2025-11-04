@@ -21,6 +21,8 @@ export interface Project {
   createdAt: Date;
   updatedAt: Date;
   members: ProjectMember[];
+  visibility: 'public' | 'private';
+  ownerId: string;
 }
 
 export interface ProjectMember {
